@@ -4,7 +4,41 @@
  * Описание настроек плагина для интерфейса редактирования в админке
  */
 $config['$config_scheme$'] = array(
-    'per_page'           => array(
+    'data.in_password'           => array(
+        /*
+         * тип: integer, string, array, boolean, float
+         */
+        'type'        => 'string',
+        /*
+         * отображаемое имя параметра, ключ языкового файла
+         */
+        'name'        => 'Secret key',
+        /*
+         * отображаемое описание параметра, ключ языкового файла
+         */
+        'description' => 'Secret key',
+        /*
+         * валидатор (не обязательно)
+         */
+        'validator'   => array(
+            /*
+             * тип валидатора, существующие типы валидаторов движка:
+             * Boolean, Compare, Date, Email, Number, Regexp, Required, String, Tags, Type, Url, Array (специальный валидатор, см. документацию)
+             */
+            'type'   => 'String',
+            /*
+             * параметры, которые будут переданы в валидатор
+             */
+            'params' => array(
+                'min'         => 1,
+                /*
+                 * не допускать пустое значение
+                 */
+                'allowEmpty'  => false,
+            ),
+        ),
+    ),
+    'data.dev_id'           => array(
         /*
          * тип: integer, string, array, boolean, float
          */
@@ -12,11 +46,11 @@ $config['$config_scheme$'] = array(
         /*
          * отображаемое имя параметра, ключ языкового файла
          */
-        'name'        => 'config.per_page.name',
+        'name'        => 'Developer id',
         /*
          * отображаемое описание параметра, ключ языкового файла
          */
-        'description' => 'config.per_page.description',
+        'description' => 'Developer id',
         /*
          * валидатор (не обязательно)
          */
@@ -31,11 +65,74 @@ $config['$config_scheme$'] = array(
              */
             'params' => array(
                 'min'         => 1,
-                'max'         => 50,
                 /*
-                 * разрешить только целое число
+                 * не допускать пустое значение
                  */
-                'integerOnly' => true,
+                'allowEmpty'  => false,
+            ),
+        ),
+    ),
+    'data.login'           => array(
+        /*
+         * тип: integer, string, array, boolean, float
+         */
+        'type'        => 'string',
+        /*
+         * отображаемое имя параметра, ключ языкового файла
+         */
+        'name'        => 'Login',
+        /*
+         * отображаемое описание параметра, ключ языкового файла
+         */
+        'description' => 'Developer login',
+        /*
+         * валидатор (не обязательно)
+         */
+        'validator'   => array(
+            /*
+             * тип валидатора, существующие типы валидаторов движка:
+             * Boolean, Compare, Date, Email, Number, Regexp, Required, String, Tags, Type, Url, Array (специальный валидатор, см. документацию)
+             */
+            'type'   => 'String',
+            /*
+             * параметры, которые будут переданы в валидатор
+             */
+            'params' => array(
+                'min'         => 1,
+                /*
+                 * не допускать пустое значение
+                 */
+                'allowEmpty'  => false,
+            ),
+        ),
+    ),
+    'data.password'           => array(
+        /*
+         * тип: integer, string, array, boolean, float
+         */
+        'type'        => 'string',
+        /*
+         * отображаемое имя параметра, ключ языкового файла
+         */
+        'name'        => 'Password',
+        /*
+         * отображаемое описание параметра, ключ языкового файла
+         */
+        'description' => 'Developer password',
+        /*
+         * валидатор (не обязательно)
+         */
+        'validator'   => array(
+            /*
+             * тип валидатора, существующие типы валидаторов движка:
+             * Boolean, Compare, Date, Email, Number, Regexp, Required, String, Tags, Type, Url, Array (специальный валидатор, см. документацию)
+             */
+            'type'   => 'String',
+            /*
+             * параметры, которые будут переданы в валидатор
+             */
+            'params' => array(
+                'min'         => 1,
                 /*
                  * не допускать пустое значение
                  */
@@ -62,7 +159,11 @@ $config['$config_sections$'] = array(
          * Список параметров для отображения в разделе
          */
         'allowed_keys' => array(
-            'per_page',
+
+            'data.dev_id',
+            'data.login',
+            'data.password',
+            'data.in_password',
         ),
     ),
 );

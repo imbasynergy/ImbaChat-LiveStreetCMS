@@ -20,6 +20,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
     protected function RegisterEvent()
     {
         $this->AddEvent('index', 'EventIndex');
+        $this->AddEventPreg('/^([\w\-\_]+)$/i', 'EventAuthUser');
         $this->AddEventPreg('/^([\w\-\_]+)$/i', '/([0-9]+)\,/i', 'EventGetUsers');
     }
 
@@ -77,6 +78,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
         /**
          * Логин и пароль являются строками?
          */
+
         if (!is_string(getRequest('login')) or !is_string(getRequest('password'))) {
             $this->Message_AddErrorSingle($this->Lang_Get('common.error.system.base'));
             return;
@@ -87,6 +89,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
         if ((func_check(getRequest('login'),
                     'mail') and $oUser = $this->User_GetUserByMail(getRequest('login'))) or $oUser = $this->User_GetUserByLogin(getRequest('login'))
         ) {
+
             /**
              *  Выбираем сценарий валидации
              */
@@ -108,35 +111,24 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
                             array('reactivation_path' => Router::GetPath('auth/reactivation'))));
                         return;
                     }
-                    $bRemember = getRequest('remember', false) ? true : false;
-                    /**
-                     * Убиваем каптчу
-                     */
-                    $this->Session_Drop('captcha_keystring_user_auth');
-                    /**
-                     * Авторизуем
-                     */
-                    $this->User_Authorization($oUser, $bRemember);
-                    /**
-                     * Определяем редирект
-                     */
-                    $sUrl = Config::Get('module.user.redirect_after_login');
-                    if (getRequestStr('return-path')) {
-                        $sUrl = getRequestStr('return-path');
-                    }
-                    $this->Viewer_AssignAjax('sUrlRedirect', $sUrl ? $sUrl : Router::GetPath('/'));
-                    return json_encode($oUser);
+                    
+                    $this->User_Authorization($oUser, fasle);
+                    echo (json_encode(['name'=>$oUser->GetLogin(), 'id' => $oUser->GetId()]));
+                    return;
+                }else{
+                    echo json_encode(['errors' => ['Username and password do not match!']]);
+                    return;
                 }
             } else {
                 /**
                  * Получаем ошибки
                  */
-                $this->Viewer_AssignAjax('errors', $oUser->_getValidateErrors());
-                $this->Message_AddErrorSingle(null);
+                echo json_encode(['errors' => [$oUser->_getValidateErrors()]]);
                 return;
             }
         }
-        $this->Message_AddErrorSingle($this->Lang_Get('auth.login.notices.error_login'));
+        echo json_encode(['errors' => ['User is missing!']]);
+        return;
     }
     /**
      * Завершение работы экшена
