@@ -12,16 +12,6 @@ class PluginImbaChatWidget_HookMain extends Hook
      */
     public function RegisterHook()
     {
-        /**
-         * Хук 'topic_edit_after' вызывается после редактирование топика.
-         * В качестве обработчика назначается метод HookTopicEditAfter
-         */
-        $this->AddHook('topic_edit_after', 'HookTopicEditAfter');
-
-        /**
-         * Хук на старте экшенов. Выполняется один раз в отличии от хука "init_action"
-         * Четвертый параметр 1000 - это приоритет выполнение среди остальных навешанных хуков (чем больше, тем раньше будет выполнен обработчик)
-         */
         $this->AddHook('start_action', 'HookStartAction', __CLASS__, 1000);
     }
 
@@ -93,9 +83,5 @@ class PluginImbaChatWidget_HookMain extends Hook
             echo $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'default.tpl');
         }
         
-    }
-    public function inj_body_begin(){
-        $this->Viewer_Assign('sSWFBallsTemplateWebPath',Plugin::GetTemplateWebPath(__CLASS__).'nyb.swf');
-        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'inj_body_begin.tpl');
     }
 }
