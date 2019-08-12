@@ -20,8 +20,8 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
     protected function RegisterEvent()
     {
         $this->AddEvent('index', 'EventIndex');
-        $this->AddEventPreg('/^([\w\-\_]+)$/i', 'EventAuthUser');
-        $this->AddEventPreg('/^([\w\-\_]+)$/i', '/([0-9]+)\,/i', 'EventGetUsers');
+        $this->AddEventPreg('/^getusers$/i', '/[1-9]\d{0,5}/', 'EventGetUsers');
+        $this->AddEventPreg('/^authuser$/i', 'EventAuthUser');
     }
 
 
@@ -35,9 +35,8 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
          */
         $this->SetTemplateAction('index');
     }
-    protected function EventGetUsers()
+    public function EventGetUsers()
     {
-        //$this->Viewer_SetResponseAjax('json');
         $login = Config::get('plugin.imba_chat_widget.data.login');
         $password = Config::get('plugin.imba_chat_widget.data.password');
         //Authentication by developer login and password
