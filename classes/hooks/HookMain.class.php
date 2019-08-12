@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Класс обработчиков хуков
  */
@@ -12,21 +11,12 @@ class PluginImbaChatWidget_HookMain extends Hook
      */
     public function RegisterHook()
     {
-        $this->AddHook('start_action', 'HookStartAction', __CLASS__, 1000);
+        $this->AddHook('template_initImbaChat', 'initJs');
+        $this->AddHook('template_layout_body_begin', 'initJs');
     }
-
     /**
      * Обработчик хука
      */
-    public function HookTopicEditAfter($aParams)
-    {
-        /**
-         * Получаем топик из параметров
-         */
-        $oTopic = $aParams['oTopic'];
-
-    }
-
     public function getJWT()
     {
 // Create token header as a JSON string
@@ -35,32 +25,24 @@ class PluginImbaChatWidget_HookMain extends Hook
         $data = array();
         $data['exp'] = (int)date('U')+3600*7;
         $data['user_id'] = $this->User_GetUserCurrent()->GetId();
-
         if(isset($data['user_id']))
         {
             $data['user_id'] = (int)$data['user_id'];
         }
-
 // Create token payload as a JSON string
         $payload = json_encode($data);
-
 // Encode Header to Base64Url String
         $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
-
 // Encode Payload to Base64Url String
         $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
-
 // Create Signature Hash
         $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $pass, true);
-
 // Encode Signature to Base64Url String
         $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-
 // Create JWT
         return trim($base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature);
     }
-
-    public function HookStartAction($aParams)
+    public function initJs($aParams)
     {   
         if($this->User_GetUserCurrent()){
             $token = $this->getJWT();
@@ -80,7 +62,7 @@ class PluginImbaChatWidget_HookMain extends Hook
             );
             $settings = json_encode($settings);
             $this->Viewer_Assign('settings',$settings);
-            echo $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'default.tpl');
+            return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'default.tpl');
         }
         
     }
