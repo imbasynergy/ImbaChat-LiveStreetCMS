@@ -1,5 +1,5 @@
 
-<script src="https://dev2.imbachat.com/imbachat/v1/{Config::get('plugin.imba_chat_widget.data.dev_id')}/widget"></script>
+<script src="https://imbachat.com/imbachat/v1/{Config::get('plugin.imba_chat_widget.data.dev_id')}/widget"></script>
 <script>
     function imbachatWidget(){
         if(!window.ImbaChat){
