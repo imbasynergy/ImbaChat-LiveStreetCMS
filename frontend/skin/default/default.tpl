@@ -8,8 +8,15 @@
 
         window.ImbaChat.load({$settings})
         $('#Imbachat-b-openDialog').on('click', function(){
-        	var id = $('.js-wall-default').attr('data-user-id'); 
-        	imbaChat.openDialog(id);
+            var id = $(this).attr('user_id');
+            if(id){
+                imbaChat.openDialog(id);
+            }
+            else{
+        	   var id = $('.js-wall-default').attr('data-user-id');
+               imbaChat.openDialog(id);
+            }
+        	
         });
     }
     imbachatWidget();
