@@ -11,6 +11,7 @@ class PluginImbaChatWidget_HookMain extends Hook
      */
     public function RegisterHook()
     {
+        $this->addHook('template_imbachat_opendialog', 'getButtonOpenDialog');
         $this->AddHook('template_initImbaChat', 'initJs');
         $this->AddHook('template_layout_body_begin', 'initJs');
     }
@@ -66,4 +67,13 @@ class PluginImbaChatWidget_HookMain extends Hook
         }
         
     }
+    public function getButtonOpenDialog($aParams)
+    {   
+        if($this->User_GetUserCurrent()){
+            $this->Viewer_Assign('settings',$settings);
+            return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'buttonOpenDialog.tpl');
+        }
+        
+    }
+    
 }

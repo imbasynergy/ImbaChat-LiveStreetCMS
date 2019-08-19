@@ -1,0 +1,1 @@
+<div style="cursor: pointer;display: inline-block;margin-top: 21px;margin-left: 25px;padding: 5px;border-radius: 3px;background: #4ec4ff;color: white;" id="Imbachat-b-openDialog">Написать</div>
