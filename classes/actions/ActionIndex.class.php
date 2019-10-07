@@ -1,5 +1,6 @@
 <?php
-
+use engine\classes\Mapper;
+//use engine\classes\Engine;
 /**
  * Класс экшена
  */
@@ -20,6 +21,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
     protected function RegisterEvent()
     {
         $this->AddEvent('index', 'EventIndex');
+        $this->AddEventPreg('/^searchusers$/i', '/\w/', 'EventSearchUsers');
         $this->AddEventPreg('/^getusers$/i', '/[1-9]\d{0,5}/', 'EventGetUsers');
         $this->AddEventPreg('/^authuser$/i', 'EventAuthUser');
     }
@@ -57,6 +59,29 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
             $user = array();
             $user['name'] = $user_m->GetLogin();
             $user['user_id'] = $id;
+            $users[] = $user;
+        }
+        echo json_encode($users);
+    }
+    public function EventSearchUsers()
+    {
+        $login = Config::get('plugin.imba_chat_widget.data.login');
+        $password = Config::get('plugin.imba_chat_widget.data.password');
+        //Authentication by developer login and password
+        if(!isset($_SERVER['PHP_AUTH_USER']) || ($_SERVER['PHP_AUTH_PW']!=$password) || strtolower($_SERVER['PHP_AUTH_USER'])!=$login)
+        {
+            header('WWW-Authenticate: Basic realm="Backend"');
+            header('HTTP/1.0 401 Unauthorized');
+            echo 'Authenticate required!';
+            die();
+        }
+        $mysqli = new mysqli(Config::get('db.params.host'), Config::get('db.params.user'), Config::get('db.params.pass'), Config::get('db.params.dbname'), 3306);
+        $res = $mysqli->query("SELECT * FROM user WHERE user_login LIKE '%".$mysqli->real_escape_string($this->getParam(0))."%'");
+        $users = array();
+        while ($row = $res->fetch_assoc()) {
+            $user = array();
+            $user['name'] = $row['user_login'];
+            $user['user_id'] = $row['user_id'];
             $users[] = $user;
         }
         echo json_encode($users);
