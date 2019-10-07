@@ -39,16 +39,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
     }
     public function EventGetUsers()
     {
-        $login = Config::get('plugin.imba_chat_widget.data.login');
-        $password = Config::get('plugin.imba_chat_widget.data.password');
-        //Authentication by developer login and password
-        if(!isset($_SERVER['PHP_AUTH_USER']) || ($_SERVER['PHP_AUTH_PW']!=$password) || strtolower($_SERVER['PHP_AUTH_USER'])!=$login)
-        {
-            header('WWW-Authenticate: Basic realm="Backend"');
-            header('HTTP/1.0 401 Unauthorized');
-            echo 'Authenticate required!';
-            die();
-        }
+        $this->testAuthOrDie();
         $ids = $this->getParam(0);
         $ids = explode(",", $ids);
         $users = array();
@@ -65,16 +56,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
     }
     public function EventSearchUsers()
     {
-        $login = Config::get('plugin.imba_chat_widget.data.login');
-        $password = Config::get('plugin.imba_chat_widget.data.password');
-        //Authentication by developer login and password
-        if(!isset($_SERVER['PHP_AUTH_USER']) || ($_SERVER['PHP_AUTH_PW']!=$password) || strtolower($_SERVER['PHP_AUTH_USER'])!=$login)
-        {
-            header('WWW-Authenticate: Basic realm="Backend"');
-            header('HTTP/1.0 401 Unauthorized');
-            echo 'Authenticate required!';
-            die();
-        }
+        $this->testAuthOrDie();
         $mysqli = new mysqli(Config::get('db.params.host'), Config::get('db.params.user'), Config::get('db.params.pass'), Config::get('db.params.dbname'), 3306);
         $res = $mysqli->query("SELECT * FROM user WHERE user_login LIKE '%".$mysqli->real_escape_string($this->getParam(0))."%'");
         $users = array();
@@ -88,16 +70,7 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
     }
     //Log in user via login and password
     public function EventAuthUser(){
-        $login = Config::get('plugin.imba_chat_widget.data.login');
-        $password = Config::get('plugin.imba_chat_widget.data.password');
-        //Authentication by developer login and password
-        if(!isset($_SERVER['PHP_AUTH_USER']) || ($_SERVER['PHP_AUTH_PW']!=$password) || strtolower($_SERVER['PHP_AUTH_USER'])!=$login)
-        {
-            header('WWW-Authenticate: Basic realm="Backend"');
-            header('HTTP/1.0 401 Unauthorized');
-            echo 'Authenticate required!';
-            die();
-        }
+        $this->testAuthOrDie();
 
         /**
          * Логин и пароль являются строками?
@@ -162,5 +135,24 @@ class PluginImbaChatWidget_ActionIndex extends ActionPlugin
         /**
          * Здесь можно прогрузить в шаблон какие-то общие переменные для всех евентов
          */
+    }
+    protected function testAuthOrDie()
+    {
+        $login = Config::get('plugin.imba_chat_widget.data.login');
+        $password = Config::get('plugin.imba_chat_widget.data.password');
+        if(!isset($_SERVER['PHP_AUTH_USER'])
+                || ($_SERVER['PHP_AUTH_PW']!=$password) 
+                || strtolower($_SERVER['PHP_AUTH_USER'])!=$login)
+        {
+            header('WWW-Authenticate: Basic realm="Backend"');
+            header('HTTP/1.0 401 Unauthorized');
+            echo json_encode([
+                "code" => 401,
+                "version" => $this->getApiVersion()['version'],
+                "error" => 'Authenticate required!',
+                'debug' => ''
+            ]);
+            die();
+        }
     }
 }
