@@ -1,6 +1,6 @@
 [![ImbaChat](http://imbachat.com/themes/imbachat/assets/img/logo.svg "ImbaChat")](http://imbachat.com "ImbaChat")
 
-# Виджет чата для October CMS
+# Виджет чата для LiveStreet CMS
 
 Это бесплатный плагин для интеграции Livestreet CMS с сервисом чатов imbachat.com 
 Позволяет бесплатно добавить виджет чата между пользователями вашего сайта. 
