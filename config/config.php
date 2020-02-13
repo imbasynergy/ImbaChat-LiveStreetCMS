@@ -10,5 +10,5 @@ $config['data']['dev_id'] = '26';
 $config['data']['in_password'] = '';
 
 
-$config['$root$']['router']['page']['imba_chat_widget'] = 'PluginImbaChatWidget_ActionIndex';
+$config['$root$']['router']['page']['imba_chat'] = 'PluginImbaChatWidget_ActionIndex';
 return $config;
