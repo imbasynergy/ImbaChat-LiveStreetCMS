@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
     <name>
-        <lang name="default">ImbaChatWidget</lang>
-        <lang name="ru">ImbaChatWidget</lang>
+        <lang name="default">ImbaChat</lang>
+        <lang name="ru">ImbaChat</lang>
     </name>
     <author>
         <lang name="default">author</lang>
@@ -16,7 +16,7 @@
         </plugins>
     </requires>
     <description>
-        <lang name="default">Description of plugin ImbaChatWidget</lang>
-        <lang name="ru">Описание плагина ImbaChatWidget</lang>
+        <lang name="default">Description of plugin ImbaChat</lang>
+        <lang name="ru">Описание плагина ImbaChat</lang>
     </description>
 </plugin>
