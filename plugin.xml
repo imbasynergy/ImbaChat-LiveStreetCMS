@@ -11,7 +11,7 @@
     <homepage>http://livestreet.ru</homepage>
     <version>1.0.0</version>
     <requires>
-        <livestreet>1.0</livestreet>
+        <livestreet>2.0.1</livestreet>
         <plugins>
         </plugins>
     </requires>
